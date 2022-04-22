@@ -4,12 +4,12 @@ import { galleryItems } from './gallery-items.js';
 const galleryContainer = document.querySelector('.gallery');
 const galleryMarkup = createGalleryMarkup(galleryItems);
 
-galleryContainer.addEventListener('click', onClickPreviewGallery)
-
 galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
 
-function createGalleryMarkup(items) {
-  return items
+galleryContainer.addEventListener('click', onPreviewGalleryClick);
+
+function createGalleryMarkup(galleryItems) {
+  return galleryItems
     .map(({ preview, original, description }) => {
       return `
         <div class="gallery__item">
@@ -27,10 +27,42 @@ function createGalleryMarkup(items) {
     .join('');
 }
 
-function onClickPreviewGallery (evt) {
-    if (evt.target.nodeName !== 'IMG') {
-        return;
-    }
+function onPreviewGalleryClick(evt) {
+  evt.preventDefault();
 
-    console.log(evt.target.nodeName);
+  if (!evt.target.classList.contains('gallery__image')) {
+    return;
+  }
+
+  const previewImg = evt.target;
+  const originalImg = previewImg.dataset.source;
+
+  openModalImg(previewImg, originalImg);
+  closeModalImg();
+}
+
+function openModalImg(previewImg, originalImg) {
+  previewImg.onclick = () => {
+    basicLightbox
+      .create(
+        `
+            <img width="1400" height="900" src="${originalImg}">
+        `
+      )
+      .show();
+  };
+}
+
+function closeModalImg() {
+  const visible = basicLightbox.visible();
+
+  if (visible) {
+    document.addEventListener('keydown', ({ key }) => {
+      if (key === 'Escape') {
+        console.log('key: ', key);
+      }
+    });
+  }
+
+  console.log(visible);
 }
