@@ -14,7 +14,7 @@ function createGalleryMarkup(galleryItems) {
       return `
           <li>
           <a class="gallery__item" href="${original}">
-          <img class="gallery__image" src="${preview}" alt="${description}" />
+          <img class="gallery__image" src="${preview}" alt="${description}"/>
         </a>
           </li>
           `;
@@ -28,12 +28,10 @@ function onPreviewGalleryClick(evt) {
   if (!evt.target.classList.contains('gallery__image')) {
     return;
   }
-
-  const previewImg = evt.target;
-  const originalImg = previewImg.dataset.source;
-
-  console.log(previewImg);
-  
-  // openModalImg(previewImg, originalImg);
-  // closeModalImg();
 }
+
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
