@@ -27,13 +27,18 @@ function createGalleryMarkup(galleryItems) {
     .join('');
 }
 
-const instance = basicLightbox.create(`
+const instance = basicLightbox.create(
+  `
   <img class="modal-img" src= ''>
-`, 
-{
-  onShow: (instance) => {console.log('Before open')},
-  onClose: (instance) => {console.log('After open')},
-},
+`,
+  {
+    onShow: instance => {
+      window.addEventListener('keydown', closeModalImg);
+    },
+    onClose: instance => {
+      window.removeEventListener('keydown', closeModalImg);
+    },
+  }
 );
 
 function onPreviewGalleryClick(evt) {
@@ -43,35 +48,12 @@ function onPreviewGalleryClick(evt) {
     return;
   }
 
-  const previewImg = evt.target;
-  const originalImg = previewImg.dataset.source;
-
-  openModalImg(previewImg, originalImg);
-  closeModalImg();
-}
-
-function openModalImg(previewImg, originalImg) {
-  // previewImg.onclick = () => {
-  //   basicLightbox
-  //     .create(
-  //       `
-  //           <img width="1400" height="900" src="${originalImg}">
-  //       `
-  //     )
-  //     .show();
-  // };
+  instance.element().querySelector('.modal-img').src = evt.target.dataset.source;
+  instance.show();
 }
 
 function closeModalImg() {
-  const visible = basicLightbox.visible();
-
-  if (visible) {
-    document.addEventListener('keydown', ({ key }) => {
-      if (key === 'Escape') {
-        console.log('key: ', key);
-      }
-    });
+  if (key === 'Escape') {
+    instance.close();
   }
-
-  console.log(visible);
 }
