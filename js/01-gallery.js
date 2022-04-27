@@ -27,10 +27,19 @@ function createGalleryMarkup(galleryItems) {
     .join('');
 }
 
+const instance = basicLightbox.create(`
+  <img class="modal-img" src= ''>
+`, 
+{
+  onShow: (instance) => {console.log('Before open')},
+  onClose: (instance) => {console.log('After open')},
+},
+);
+
 function onPreviewGalleryClick(evt) {
   evt.preventDefault();
 
-  if (!evt.target.classList.contains('gallery__image')) {
+  if (evt.target.nodeName !== 'IMG') {
     return;
   }
 
@@ -42,15 +51,15 @@ function onPreviewGalleryClick(evt) {
 }
 
 function openModalImg(previewImg, originalImg) {
-  previewImg.onclick = () => {
-    basicLightbox
-      .create(
-        `
-            <img width="1400" height="900" src="${originalImg}">
-        `
-      )
-      .show();
-  };
+  // previewImg.onclick = () => {
+  //   basicLightbox
+  //     .create(
+  //       `
+  //           <img width="1400" height="900" src="${originalImg}">
+  //       `
+  //     )
+  //     .show();
+  // };
 }
 
 function closeModalImg() {
