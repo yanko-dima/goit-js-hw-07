@@ -52,8 +52,8 @@ function onPreviewGalleryClick(evt) {
   instance.show();
 }
 
-function closeModalImg() {
-  if (key === 'Escape') {
+function closeModalImg(evt) {
+  if (evt.key === 'Escape') {
     instance.close();
   }
 }
